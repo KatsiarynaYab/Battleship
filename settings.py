@@ -6,7 +6,7 @@ class Settings():
     bg_color = (245, 245, 245)
     line_color = (12, 10, 62)
     attack_color = (255, 39, 10)
-    field_color = (35, 124, 169)
+    field_color = (187, 223, 241)
 
     field_size = field_width, field_width = (401, 401)
     cell_size = cell_width, cell_width = (int(field_width/10), int(field_width/10))
@@ -15,6 +15,6 @@ class Settings():
 
     help_window_size = (201, 301)
     help_window_color = (226, 213, 203)
-    help_window_coordinates = (50 + field_width + 50, 200)
+    help_window_coordinates = (50 + field_width + 50, 100)
 
-    ship_lines_color = (135, 198, 232)
+    ship_color = (35, 124, 169)
