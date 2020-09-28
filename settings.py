@@ -16,5 +16,3 @@ class Settings():
     help_window_size = (201, 301)
     help_window_color = (226, 213, 203)
     help_window_coordinates = (50 + field_width + 50, 100)
-
-    ship_color = (35, 124, 169)

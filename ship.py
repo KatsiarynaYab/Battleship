@@ -2,8 +2,9 @@ import pygame
 
 from settings import Settings as game_settings
 
+
 class Ship():
-    def __init__(self, screen, size = 1,):
+    def __init__(self, screen, size=1,):
         self.ship_coordinates = self.x, self.y = (0, 0)
         self.size = size
         self.screen = screen
@@ -20,3 +21,6 @@ class Ship():
 
     def update_coordinates(self, coordinates):
         self.ship_coordinates = self.x, self.y = coordinates
+
+    def collidepoint(self, pos):
+        return self.rect.collidepoint(pos)

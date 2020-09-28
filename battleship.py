@@ -36,6 +36,7 @@ def draw_ships(screen):
         ship.update()
 
 
+
 def run_game():
     #Game initialization
     pygame.init()
@@ -49,25 +50,28 @@ def run_game():
     pygame.display.set_caption("Battleship")
     start_game()
     ship_draging = False
+    ship_dragged = None
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     if event.button == 1:
-            #         if ship_array[0].collidepoint(event.pos):
-            #             ship_draging = True
-            #             mouse_x, mouse_y = event.pos
-            #             offset_x = ship_array[0].x - mouse_x
-            #             offset_y = ship_array[0].y - mouse_y
-            # elif event.type == pygame.MOUSEBUTTONUP:
-            #     if event.button == 1:
-            #         ship_draging = False
-            # elif event.type == pygame.MOUSEMOTION:
-            #     if ship_draging:
-            #         mouse_x, mouse_y = event.pos
-            #         ship_array[0].x = mouse_x + offset_x
-            #         ship_array[0].y = mouse_y + offset_y
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for ship in ship_array:
+                        if ship.collidepoint(event.pos):
+                            #ship_draging = True
+                            ship_dragged = ship
+                            mouse_x, mouse_y = event.pos
+                            offset_x = ship.x - mouse_x
+                            offset_y = ship.y - mouse_y
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    ship_dragged = None
+            elif event.type == pygame.MOUSEMOTION:
+                if ship_dragged is not None:
+                    mouse_x, mouse_y = event.pos
+                    ship_dragged.x = mouse_x + offset_x
+                    ship_dragged.y = mouse_y + offset_y
         screen.fill(game_settings.bg_color)
         gamer_field.update()
         screen.blit(gamer_field, game_settings.field1_coordinates)
