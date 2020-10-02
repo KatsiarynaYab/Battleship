@@ -8,10 +8,14 @@ class Ship():
         self.default_ship_coordinates = self.x, self.y = (0, 0)
         self.size = size
         self.screen = screen
+        self.ishorizontal = True
         self.ship_body_width, self.ship_body_height = (game_settings.cell_width*self.size+1, game_settings.cell_width+1)
         ship_filename = 'ships/ship' + str(self.size) + '.png'
         self.image = pygame.image.load(ship_filename)
         self.rect = self.image.get_rect()
+        self.cell_width = self.size
+        self.cell_height = 1
+        self.dragable = True
 
     def update(self):
         self.rect.x = self.x
@@ -27,5 +31,40 @@ class Ship():
     def collidepoint(self, pos):
         return self.rect.collidepoint(pos)
 
+    def change_angle(self):
+        if self.ishorizontal:
+            self.to_vertical()
+        else:
+            self.to_horizontal()
+
     def to_vertical(self):
-        pygame.
+        tmp = self.rect.width
+        self.rect.width = self.ship_body_width= self.rect.height
+        self.rect.height = self.ship_body_height = tmp
+        self.image = pygame.transform.rotate(self.image, 90)
+        self.cell_width = 1
+        self.cell_height = self.size
+        self.ishorizontal = False
+
+    def to_horizontal(self):
+        tmp = self.rect.width
+        self.rect.width = self.ship_body_width= self.rect.height
+        self.rect.height = self.ship_body_height = tmp
+        self.image = pygame.transform.rotate(self.image, -90)
+        self.cell_width = self.size
+        self.cell_height = 1
+        self.ishorizontal = True
+
+    def take_default_position(self):
+        self.x, self.y = self.default_ship_coordinates
+        if not self.ishorizontal:
+            self.change_angle()
+
+    def is_horizontal(self):
+        return self.ishorizontal
+
+    def is_dragable(self):
+        return self.dragable
+
+    def fix_on_place(self):
+        self.dragable = False
