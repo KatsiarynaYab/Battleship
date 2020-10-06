@@ -13,7 +13,7 @@ class Settings():
     field_size = field_width, field_width = (401, 401)
     cell_size = cell_width, cell_width = (int(field_width/cells_in_row_number), int(field_width/cells_in_row_number))
     player_field_coordinates = (border_size, border_size)
-    enemy_field_coordinates = (screen_width-border_size-field_width, border_size)
+    enemy_field_coordinates = enemy_field_x, enemy_field_y = (screen_width-border_size-field_width, border_size)
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
@@ -24,3 +24,7 @@ class Settings():
     start_button_size = start_button_width, start_button_height = (100, 50)
     start_button_color = (224, 26, 0)
     start_button_coordinates = start_button_x, start_button_y= (border_size + field_width + border_size*2, border_size)
+
+    ships_path = 'images/ships/ship'
+    fire_path = 'images/fire.png'
+    missfire_path = 'images/cross.png'
