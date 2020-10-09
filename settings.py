@@ -21,6 +21,9 @@ class Settings():
     help_window_color = (226, 213, 203)
     help_window_coordinates = (border_size + field_width + border_size, 150)
 
+    scrollbar_width = 20
+    scrollbar_height = 40
+
     start_button_size = start_button_width, start_button_height = (100, 50)
     start_button_color = (224, 26, 0)
     start_button_coordinates = start_button_x, start_button_y= (border_size + field_width + border_size*2, border_size)
