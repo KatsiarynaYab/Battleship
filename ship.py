@@ -8,7 +8,7 @@ class Ship():
         self.default_ship_coordinates = self.x, self.y = (0, 0)
         self.size = size
         self.lifes = size
-        self.ishorizontal = True
+        self.horizontal = True
         self.ship_body_width, self.ship_body_height = (game_settings.cell_width*self.size+1, game_settings.cell_width+1)
         ship_filename = game_settings.ships_path + str(self.size) + '.png'
         self.image = pygame.image.load(ship_filename)
@@ -34,15 +34,15 @@ class Ship():
     def collidepoint(self, pos):
         return self.rect.collidepoint(pos)
 
-    def set_ishorizontal(self, ishorizontal):
-        self.ishorizontal = ishorizontal
+    def set_horizontal(self, arg):
+        self.horizontal = arg
 
     def alive(self):
         self.lifes = self.size
         self.killed = False
 
     def change_angle(self):
-        if self.ishorizontal:
+        if self.horizontal:
             self.to_vertical()
         else:
             self.to_horizontal()
@@ -54,7 +54,7 @@ class Ship():
         self.image = pygame.transform.rotate(self.image, 90)
         self.cell_width = 1
         self.cell_height = self.size
-        self.ishorizontal = False
+        self.horizontal = False
 
     def to_horizontal(self):
         tmp = self.rect.width
@@ -63,27 +63,24 @@ class Ship():
         self.image = pygame.transform.rotate(self.image, -90)
         self.cell_width = self.size
         self.cell_height = 1
-        self.ishorizontal = True
+        self.horizontal = True
 
     def take_default_position(self):
         self.x, self.y = self.default_ship_coordinates
-        if not self.ishorizontal:
+        if not self.horizontal:
             self.change_angle()
 
     def hide(self):
         self.visible = False
 
-    def make_visible(self):
-        self.visible = True
+    def set_visible(self, arg):
+        self.visible = arg
 
-    def is_horizontal(self):
-        return self.ishorizontal
-
-    def is_dragable(self):
-        return self.dragable
+    def set_dragable(self, arg):
+        self.dragable = arg
 
     def fix_on_place(self):
-        self.dragable = False
+        self.set_dragable(False)
 
     def shoot(self, i, j):
         pass
@@ -97,9 +94,3 @@ class Ship():
                         self.killed = True
                     return True
         return False
-
-    def is_killed(self):
-        return self.killed
-
-    def is_visible(self):
-        return self.visible

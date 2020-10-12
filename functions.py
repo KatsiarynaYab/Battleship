@@ -40,7 +40,7 @@ def shoot(ij_coordinates, field, ship_array):
             if ship.is_injured(i, j):
                 ship.shoot(i, j)
                 field[i][j] = -1
-                if ship.is_killed():
+                if ship.killed:
                     surround_ship(ship, field)
                     return 'killed'
                 return 'injured'

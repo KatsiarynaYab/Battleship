@@ -18,17 +18,11 @@ class Button():
         self.rect.x = x
         self.rect.y = y
 
-    def make_visible(self):
-        self.visible = True
+    def set_visible(self, arg):
+        self.visible = arg
 
-    def cansel_visible(self):
-        self.visible = False
-
-    def make_cklickable(self):
-        self.clickable = True
-
-    def cancel_clickable(self):
-        self.clickable = False
+    def set_clickable(self, arg):
+        self.clickable = arg
 
     def collidepoint(self, pos):
         return self.rect.collidepoint(pos)

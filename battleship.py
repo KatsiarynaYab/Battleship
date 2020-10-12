@@ -80,7 +80,7 @@ def set_start_ships_position():
 
 def draw_ships(screen, ship_array):
     for ship in ship_array:
-        if ship.is_visible():
+        if ship.visible:
             ship.update(screen)
 
 
@@ -112,7 +112,7 @@ def add_ship_to_field(ship, i, j, field):
     ship.cell_y = i
     for k in range(0, ship.size):
         field[i][j] = 1
-        if ship.is_horizontal():
+        if ship.horizontal:
             j += 1
         else:
             i += 1
@@ -191,8 +191,8 @@ def start_battle():
 
 def update_field(field, ship_array, field_ooordinates, fire_image, missfire_image):
     for ship in ship_array:
-        if ship.is_killed():
-            ship.make_visible()
+        if ship.killed:
+            ship.set_visible(True)
     for i in range(0, game_settings.cells_in_row_number):
         for j in range(0, game_settings.cells_in_row_number):
             if field[i][j] == 2:
@@ -221,13 +221,13 @@ def draw_fire_and_missfire(screen, fire_image, missfire_image):
 
 def win():
     for ship in enemy_ship_array:
-        if not ship.is_killed():
+        if not ship.killed:
             return False
     return True
 
 def loose():
     for ship in player_ship_array:
-        if not ship.is_killed():
+        if not ship.killed:
             return False
     return True
 
@@ -305,8 +305,8 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                                                    game_settings.player_field_coordinates[0],
                                                    game_settings.player_field_coordinates[1])
                                 #show_field(player_field)
-                                start_button.cancel_clickable()
-                                randomize_button.cancel_clickable()
+                                start_button.set_clickable(False)
+                                randomize_button.set_clickable(False)
                                 battle_started = True
                                 start_battle()
                                 help_window.add_log('!!!Battle started!!!')
@@ -316,7 +316,7 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                         randomize_field(player_field, player_ship_array, game_settings.player_field_coordinates[0],
                                         game_settings.player_field_coordinates[1])
                     for ship in player_ship_array:
-                        if ship.collidepoint(event.pos) and ship.is_dragable():
+                        if ship.collidepoint(event.pos) and ship.dragable:
                             if double_clicked:
                                 ship.change_angle()
                                 double_clicked = False
@@ -362,7 +362,7 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                 enemy.turn(player_field, player_ship_array, help_window)
                 update_display(screen, gamer_field, gamer2_field, help_window, start_button,
                                randomize_button, game_over_window, fire_image, missfire_image)
-            #missfire = False
+            missfire = False
             player_turn = True
     if win():
         game_over_window.set_text('You win!!!')
@@ -374,14 +374,18 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
 def restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
              game_over_window, fire_image, missfire_image):
     #Game initialization
+    game_over_window.set_visible(False)
     clear_field(enemy_field)
     clear_field(player_field)
     fire_array.clear()
     missfire_array.clear()
+    randomize_button.set_clickable(True)
+    start_button.set_clickable(True)
     for ship in player_ship_array:
-        if not ship.is_horizontal:
-            ship.change_angle()
         ship.alive()
+        ship.set_dragable(True)
+        if not ship.horizontal:
+            ship.change_angle()
     run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
              game_over_window, fire_image, missfire_image)
 
