@@ -5,8 +5,8 @@ from settings import Settings as game_settings
 def check_events():
     pass
 
-def xy_to_game_coordinates(x, y):
-    return (game_settings.letters[y], game_settings.numbers[x])
+def ij_to_game_coordinates(i, j):
+    return (game_settings.letters[j], game_settings.numbers[i])
 
 def xy_to_ij(x, y):
     return (int(y/game_settings.cell_width), int(x/game_settings.cell_width))

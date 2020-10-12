@@ -41,14 +41,15 @@ class Enemy():
     def cancel_hited(self):
         self.last_hit = None
 
-    def turn(self, player_field, player_ship_array):
+    def turn(self, player_field, player_ship_array, help_window):
         self.missfire = False
         i, j, side = self.play()
         shoot_result = func.shoot((i, j), player_field, player_ship_array)
-
         if shoot_result:
-            if shoot_result not in ('alredy injured', 'already missfire'):
+            if shoot_result not in ('already injured', 'already missfire'):
                 time.sleep(0.5)
+                letter, number = func.ij_to_game_coordinates(i, j)
+                help_window.add_log(f"enemy choose {letter}{number}, {shoot_result}", turn_log=True)
             if shoot_result == 'injured':
                 self.hited(i, j)
                 if not self.first_blood:
@@ -68,12 +69,3 @@ class Enemy():
             elif shoot_result == 'already missfire' and self.first_blood:
                 del self.temp_sides[side]
 
-        # else:
-        #     if self.last_hit:
-        #         self.last_hit = self.correct_hit
-        print('\nenemy play')
-        print('last_hit = ' + str(self.last_hit))
-        print('correct_hit = ' + str(self.correct_hit))
-        print('side = ' + str(side))
-        print('shoot result = ' +str(shoot_result))
-        print(self.temp_sides)

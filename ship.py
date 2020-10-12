@@ -34,6 +34,13 @@ class Ship():
     def collidepoint(self, pos):
         return self.rect.collidepoint(pos)
 
+    def set_ishorizontal(self, ishorizontal):
+        self.ishorizontal = ishorizontal
+
+    def alive(self):
+        self.lifes = self.size
+        self.killed = False
+
     def change_angle(self):
         if self.ishorizontal:
             self.to_vertical()
