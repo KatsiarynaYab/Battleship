@@ -1,7 +1,7 @@
 import pygame
 
 class Settings():
-    screen_size = screen_width, screen_height =  (1200, 800)
+    screen_size = screen_width, screen_height =  (1200, 600)
     border_size = 50
     cells_in_row_number = 10
 
@@ -12,7 +12,7 @@ class Settings():
 
     field_size = field_width, field_width = (401, 401)
     cell_size = cell_width, cell_width = (int(field_width/cells_in_row_number), int(field_width/cells_in_row_number))
-    player_field_coordinates = (border_size, border_size)
+    player_field_coordinates = player_field_x, player_field_y = (border_size, border_size)
     enemy_field_coordinates = enemy_field_x, enemy_field_y = (screen_width-border_size-field_width, border_size)
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -48,3 +48,5 @@ class Settings():
     game_over_window_size = (200, 90)
     game_over_window_color = (192,192,192)
     game_over_window_coordinates = (help_window_coordinates[0], border_size)
+
+    ship_panel_size = (field_width + border_size, 200)

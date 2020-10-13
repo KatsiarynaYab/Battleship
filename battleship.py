@@ -12,6 +12,7 @@ from field import Field
 from help_window import HelpWindow
 from ship import Ship
 from button import StartButton, RandomizeButton
+from ship_panel import ShipPanel
 from game_over_window import GameOverWindow
 
 DOUBLECLICKTIME = 500
@@ -236,8 +237,8 @@ def game_over():
         return True
     return False
 
-def end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image):
+def end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button, player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image):
     game_over_window.set_visible(True)
     while True:
         for event in pygame.event.get():
@@ -247,18 +248,18 @@ def end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_butt
                 if game_over_window.yes.collidepoint(event.pos):
                     print('yes')
                     restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-                                game_over_window, fire_image, missfire_image)
+                                player_ship_panel, enemy_ship_panel, game_over_window, fire_image, missfire_image)
                     return
                 elif game_over_window.no.collidepoint(event.pos):
                     print('no')
                     sys.exit()
-            update_display(screen, gamer_field, gamer2_field, help_window, start_button,
-                           randomize_button, game_over_window, fire_image, missfire_image, event)
+        update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
+                           player_ship_panel, enemy_ship_panel, game_over_window, fire_image, missfire_image)
 
 
 
-def update_display(screen, gamer_field, gamer2_field, help_window, start_button,
-                   randomize_button, game_over_window, fire_image, missfire_image, event = None):
+def update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
+                   player_ship_panel, enemy_ship_panel, game_over_window, fire_image, missfire_image, event = None):
     update_field(player_field, player_ship_array, game_settings.player_field_coordinates, fire_image, missfire_image)
     update_field(enemy_field, enemy_ship_array, game_settings.enemy_field_coordinates, fire_image, missfire_image)
     screen.fill(game_settings.bg_color)
@@ -267,16 +268,20 @@ def update_display(screen, gamer_field, gamer2_field, help_window, start_button,
     gamer2_field.update(screen)
     screen.blit(gamer2_field, game_settings.enemy_field_coordinates)
     start_button.update(screen)
-    help_window.update(screen, event)
+    help_window.update(screen)
     randomize_button.update(screen)
+    player_ship_panel.update_counters(player_ship_array)
+    player_ship_panel.update(screen)
+    enemy_ship_panel.update_counters(enemy_ship_array)
+    enemy_ship_panel.update(screen)
     game_over_window.update(screen)
     draw_ships(screen, player_ship_array)
     draw_ships(screen, enemy_ship_array)
     draw_fire_and_missfire(screen, fire_image, missfire_image)
     pygame.display.flip()
 
-def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image):
+def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button, player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image):
     ship_dragged = None
     double_clicked = False
     battle_started = False
@@ -307,6 +312,8 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                                 #show_field(player_field)
                                 start_button.set_clickable(False)
                                 randomize_button.set_clickable(False)
+                                player_ship_panel.set_visible(True)
+                                enemy_ship_panel.set_visible(True)
                                 battle_started = True
                                 start_battle()
                                 help_window.add_log('!!!Battle started!!!')
@@ -332,7 +339,8 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                         shoot_result = func.shoot(func.xy_to_ij(x, y), enemy_field, enemy_ship_array)
                         i, j = func.xy_to_ij(x, y)
                         letter, number = func.ij_to_game_coordinates(i, j)
-                        help_window.add_log(f"player choose {letter}{number} \n {shoot_result}", turn_log=True)
+                        if shoot_result not in("already injured", "already missfire"):
+                            help_window.add_log(f"player choose {letter}{number} \n {shoot_result}", turn_log=True)
                         if shoot_result == 'missfire':
                             missfire = True
                             player_turn = False
@@ -352,27 +360,27 @@ def run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button
                     ship_dragged.y = mouse_y + offset_y
 
             help_window.update_scrollbar(screen, event)
-        update_display(screen, gamer_field, gamer2_field, help_window, start_button,
-                       randomize_button, game_over_window, fire_image, missfire_image)
+        update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button, player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image)
         if missfire:
             enemy.turn(player_field, player_ship_array, help_window)
-            update_display(screen, gamer_field, gamer2_field, help_window, start_button,
-                           randomize_button, game_over_window, fire_image, missfire_image)
+            update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
+                           player_ship_panel, enemy_ship_panel, game_over_window, fire_image, missfire_image)
             while not enemy.missfire and not game_over():
                 enemy.turn(player_field, player_ship_array, help_window)
-                update_display(screen, gamer_field, gamer2_field, help_window, start_button,
-                               randomize_button, game_over_window, fire_image, missfire_image)
+                update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
+                               player_ship_panel, enemy_ship_panel, game_over_window, fire_image, missfire_image)
             missfire = False
             player_turn = True
     if win():
         game_over_window.set_text('You win!!!')
     else:
         game_over_window.set_text('You loose')
-    end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image)
+    end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image)
 
-def restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image):
+def restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image):
     #Game initialization
     game_over_window.set_visible(False)
     clear_field(enemy_field)
@@ -381,13 +389,20 @@ def restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_bu
     missfire_array.clear()
     randomize_button.set_clickable(True)
     start_button.set_clickable(True)
+    player_ship_panel.set_visible(False)
+    enemy_ship_panel.set_visible(False)
+    help_window.return_to_default()
     for ship in player_ship_array:
         ship.alive()
         ship.set_dragable(True)
         if not ship.horizontal:
             ship.change_angle()
-    run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image)
+    for ship in enemy_ship_array:
+        ship.alive()
+        if not ship.horizontal:
+            ship.change_angle()
+    run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image)
 
 def start_game():
     #Game initialization
@@ -401,14 +416,18 @@ def start_game():
     help_window = HelpWindow()
     start_button = StartButton()
     randomize_button = RandomizeButton()
+    player_ship_panel = ShipPanel((game_settings.player_field_x, game_settings.player_field_y +
+                                  game_settings.field_width + game_settings.border_size))
+    enemy_ship_panel = ShipPanel((game_settings.enemy_field_x, game_settings.enemy_field_y +
+                                  game_settings.field_width + game_settings.border_size))
     game_over_window = GameOverWindow()
     create_ships(player_ship_array)
     create_field(player_field)
     pygame.display.set_caption("Battleship")
     fire_image = pygame.image.load(game_settings.fire_path)
     missfire_image = pygame.image.load(game_settings.missfire_path)
-    run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-             game_over_window, fire_image, missfire_image)
+    run_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button, player_ship_panel,
+             enemy_ship_panel, game_over_window, fire_image, missfire_image)
 
 start_game()
 

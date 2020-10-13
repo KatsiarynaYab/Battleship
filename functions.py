@@ -48,3 +48,17 @@ def shoot(ij_coordinates, field, ship_array):
         return 'already injured'
     if field[i][j] == 2:
         return 'already missfire'
+
+
+def draw_ships(screen, ship_array):
+    for ship in ship_array:
+        if ship.visible:
+            ship.update(screen)
+
+
+def count_ships(ship_array):
+    count_arr = [0, 0, 0, 0]
+    for ship in ship_array:
+        if not ship.killed:
+            count_arr[ship.size-1] += 1
+    return count_arr

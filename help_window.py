@@ -10,6 +10,7 @@ class HelpWindow():
         self.size = game_settings.help_window_size
         self.width = game_settings.help_window_size[0]
         self.height = game_settings.help_window_size[1]
+        self.font = pygame.font.Font(None, game_settings.help_window_font_size)
         self.scrollbar = ScrollBar(self.height,
                          (0, 1),
                          '',
@@ -31,7 +32,7 @@ class HelpWindow():
         self.counter = 0
 
 
-    def update(self, screen, event):
+    def update(self, screen):
         self.help_window.fill(game_settings.help_window_color)
         # self.update_scrollbar(screen, event)
         self.scrollbar.draw(self.help_window)
@@ -48,9 +49,9 @@ class HelpWindow():
         self.scrollbar.update([event])
         self.scrollbar.draw(self.help_window)
 
-    def add_height(self, addend):
-        new_scrollbar_max = self.scrollbar.get_maximum() + addend
-        self.height = self.height+ addend
+    def change_height(self, new_height):
+        new_scrollbar_max = self.scrollbar.get_maximum() + (new_height - self.height)
+        self.height = new_height
         self.help_window = pygame.transform.scale(self.help_window, (self.width, self.height))
         self.scrollbar.set_length(self.height)
         self.scrollbar.set_maximum(new_scrollbar_max)
@@ -66,8 +67,7 @@ class HelpWindow():
         x, y = self.default_text_coordinates
         lines = text.splitlines()
         for line in lines:
-            line_sprite = pygame.font.Font(None, game_settings.help_window_font_size).render(line, True,
-                                                                               pygame.Color("black"))
+            line_sprite = self.font.render(line, True, pygame.Color("black"))
             self.text_lines_surf.append(line_sprite)
             self.text_rects.append(line_sprite.get_rect())
             self.text_rects[0].x, self.text_rects[0].y = 0, 0
@@ -77,7 +77,7 @@ class HelpWindow():
             y += game_settings.help_window_font_size
             # self.text_rects.y = self.default_text_coordinates[1]
             if y >= self.height:
-                self.add_height(game_settings.help_window_font_size)
+                self.change_height(self.height + game_settings.help_window_font_size)
         if game_log:
             self.scrollbar.set_value(self.scrollbar.get_maximum())
 
@@ -104,3 +104,10 @@ class HelpWindow():
                 last_space = i
             counter += 1
         return text
+
+    def return_to_default(self):
+        self.text_rects.clear()
+        self.text_lines_surf.clear()
+        self.add_log(game_settings.battleship_rules_text, False)
+        self.counter = 0
+        self.change_height(game_settings.help_window_size[1])
