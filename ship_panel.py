@@ -48,3 +48,5 @@ class ShipPanel:
             screen.blit(self.panel, self.coordinates)
 
 
+    def set_visible(self, arg):
+        self.visible = arg

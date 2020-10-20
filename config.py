@@ -49,3 +49,5 @@ game_over_window_color = (192, 192, 192)
 game_over_window_coordinates = (help_window_coordinates[0], border_size)
 
 ship_panel_size = (field_width + border_size, 200)
+
+DOUBLECLICKTIME = 500

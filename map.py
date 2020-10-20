@@ -3,9 +3,9 @@ import pygame
 import config
 
 
-class Field(pygame.Surface):
+class Map(pygame.Surface):
     def __init__(self, coordinates):
-        super().__init__(self, config.field_size)
+        pygame.Surface.__init__(self, config.field_size)
         self.coordinates = coordinates
         self.letters = []
         self.letters_rects = []
