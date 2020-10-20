@@ -2,6 +2,7 @@ class GameError(Exception):
     """Base class for other exceptions"""
     pass
 
+
 class WrongShipsPosition(Exception):
     """Raised when cannot fill the field with ships according the rules
     Attributes:
