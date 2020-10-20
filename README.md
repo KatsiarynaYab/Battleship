@@ -13,11 +13,12 @@
 
 <h1>Let's play</h1>
 <h2>Clone repository</h2>
-        git clone https://github.com/KatsiarynaYab/Battleship.git
-        cd Battleship
-<h2>Run game</h2>
-$ python battleship.py
 
+<p>$ git clone https://github.com/KatsiarynaYab/Battleship.git</p>
+<p>$ cd Battleship</p>
+
+<h2>Run game</h2>
+<p>$ python battleship.py</p>
 <h2>Enjoy!</h2>
 
 Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
