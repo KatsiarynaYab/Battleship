@@ -20,9 +20,9 @@ class ShootResult():
 
     def __ne__(self, other):
         return self.coordinates!=other.coordinates
-    
+
     def __hash__(self):
-        return self.coordinates[0]*3 + self.coordinates[1]*5
+        return hash(self.coordinates)
 
 class Fire(ShootResult):
     def __init__(self):

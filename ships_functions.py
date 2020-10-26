@@ -60,7 +60,7 @@ def set_start_player_ships_position(player_ship_array):
         ship.set_default_coordinates(coordinates)
         coordinates = (coordinates[0] + config.border_size + config.cell_width * ship.size, coordinates[1])
         # switch to second line
-        if coordinates[0] > 700 and switch_to_second_line:
+        if coordinates[0] > 700 and not switch_to_second_line:
             coordinates = (config.border_size, y + config.border_size)
             switch_to_second_line = True
 
