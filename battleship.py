@@ -37,10 +37,8 @@ def start_game():
     ships_functions.create_ships(player_ship_array)
     game_functions.create_field(player_field)
     pygame.display.set_caption("Battleship")
-    fire_image = pygame.image.load(config.fire_path)
-    missfire_image = pygame.image.load(config.missfire_path)
     game_functions.run_game(screen, player_map, enemy_map, enemy, help_window, start_button, randomize_button, player_ship_panel,
-             enemy_ship_panel, game_over_window, fire_image, missfire_image, player_ship_array, enemy_ship_array, player_field,
+             enemy_ship_panel, game_over_window, player_ship_array, enemy_ship_array, player_field,
                             enemy_field, fire_array, missfire_array)
 
 
