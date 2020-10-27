@@ -9,10 +9,10 @@ class Ship:
         self.size = size
         self.lifes = size
         self.horizontal = True
-        self.ship_body_width, self.ship_body_height = (config.cell_width * self.size + 1, config.cell_width + 1)
+        self._ship_body_width, self._ship_body_height = (config.cell_width * self.size + 1, config.cell_width + 1)
         ship_filename = config.ships_path + str(self.size) + '.png'
-        self.image = pygame.image.load(ship_filename)
-        self.rect = self.image.get_rect()
+        self.__image = pygame.image.load(ship_filename)
+        self.__rect = self.__image.get_rect()
         self.cell_width = self.size
         self.cell_height = 1
         self.cell_x = self.cell_y = 0
@@ -21,9 +21,9 @@ class Ship:
         self.visible = True
 
     def update(self, screen):
-        self.rect.x = self.x
-        self.rect.y = self.y
-        screen.blit(self.image, self.rect)
+        self.__rect.x = self.x
+        self.__rect.y = self.y
+        screen.blit(self.__image, self.__rect)
 
     def update_coordinates(self, coordinates):
         self.x, self.y = coordinates
@@ -32,7 +32,7 @@ class Ship:
         self.default_ship_coordinates = self.x, self.y = coordinates
 
     def collidepoint(self, pos):
-        return self.rect.collidepoint(pos)
+        return self.__rect.collidepoint(pos)
 
     def set_horizontal(self, arg):
         self.horizontal = arg
@@ -48,19 +48,19 @@ class Ship:
             self.to_horizontal()
 
     def to_vertical(self):
-        tmp = self.rect.width
-        self.rect.width = self.ship_body_width = self.rect.height
-        self.rect.height = self.ship_body_height = tmp
-        self.image = pygame.transform.rotate(self.image, 90)
+        tmp = self.__rect.width
+        self.__rect.width = self._ship_body_width = self.__rect.height
+        self.__rect.height = self._ship_body_height = tmp
+        self.__image = pygame.transform.rotate(self.__image, 90)
         self.cell_width = 1
         self.cell_height = self.size
         self.horizontal = False
 
     def to_horizontal(self):
-        tmp = self.rect.width
-        self.rect.width = self.ship_body_width = self.rect.height
-        self.rect.height = self.ship_body_height = tmp
-        self.image = pygame.transform.rotate(self.image, -90)
+        tmp = self.__rect.width
+        self.__rect.width = self._ship_body_width = self.__rect.height
+        self.__rect.height = self._ship_body_height = tmp
+        self.__image = pygame.transform.rotate(self.__image, -90)
         self.cell_width = self.size
         self.cell_height = 1
         self.horizontal = True
@@ -98,8 +98,8 @@ class Ship:
     def on_player_field(self):
         optimizer = config.cell_width / 2
         if self.x + optimizer > config.border_size and self.y + optimizer > config.border_size \
-                and self.x + self.ship_body_width - optimizer < config.border_size + config.field_width \
-                and self.y + self.ship_body_height - optimizer < config.border_size + config.field_width:
+                and self.x + self._ship_body_width - optimizer < config.border_size + config.field_width \
+                and self.y + self._ship_body_height - optimizer < config.border_size + config.field_width:
             return True
         else:
             return False

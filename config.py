@@ -1,3 +1,5 @@
+import pygame
+
 screen_size = screen_width, screen_height = (1200, 600)
 border_size = 50
 cells_in_row_number = 10
@@ -41,8 +43,9 @@ random_button_coordinates = random_button_x, random_button_y = (help_window_coor
                                                                 help_window_coordinates[1] - 40)
 
 ships_path = 'images/ships/ship'
-fire_path = 'images/fire.png'
-missfire_path = 'images/cross.png'
+
+fire_image = pygame.image.load('images/fire.png')
+missfire_image = pygame.image.load('images/cross.png')
 
 game_over_window_size = (200, 90)
 game_over_window_color = (192, 192, 192)

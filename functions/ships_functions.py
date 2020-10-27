@@ -1,8 +1,8 @@
 import config
 
-import game_functions
-from game_errors import WrongShipsPosition
-from ship import Ship
+from functions import game_functions
+from game_elements.game_errors import WrongShipsPosition
+from game_elements.ship import Ship
 
 
 def create_ships(ship_array):

@@ -4,9 +4,9 @@ import pygame
 
 import config
 
-import ships_functions
-import shoot_results
-from game_errors import WrongShipsPosition
+from functions import ships_functions
+from game_elements import shoot_results
+from game_elements.game_errors import WrongShipsPosition
 
 
 def ij_to_game_coordinates(i, j):
@@ -44,13 +44,13 @@ def clear_field(field):
 def shoot(ij_coordinates, field, ship_array):
     i, j = ij_coordinates
     if field[i][j] == 0:
-        field[i][j] = 2     # missfire
+        field[i][j] = 2  # missfire
         return 'missfire'
     if field[i][j] == 1:
         for ship in ship_array:
             if ship.injured(i, j):
                 ship.shoot(i, j)
-                field[i][j] = -1    # hited
+                field[i][j] = -1  # hited
                 if ship.killed:
                     ships_functions.surround_ship(ship, field)
                     return 'killed'
@@ -153,17 +153,15 @@ def end_battle(screen, gamer_field, gamer2_field, enemy, help_window, start_butt
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if game_over_window.yes.collidepoint(event.pos):
-                    print('yes')
                     restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_button, randomize_button,
-                         player_ship_panel, enemy_ship_panel, game_over_window, enemy_field,
-                         player_field, fire_array, missfire_array, player_ship_array, enemy_ship_array)
+                                 player_ship_panel, enemy_ship_panel, game_over_window, enemy_field,
+                                 player_field, fire_array, missfire_array, player_ship_array, enemy_ship_array)
                     return
                 elif game_over_window.no.collidepoint(event.pos):
-                    print('no')
                     sys.exit()
         update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
                        player_ship_panel, enemy_ship_panel, game_over_window, player_field,
-                       enemy_field, player_ship_array, enemy_ship_array,fire_array, missfire_array)
+                       enemy_field, player_ship_array, enemy_ship_array, fire_array, missfire_array)
 
 
 def update_display(screen, gamer_field, gamer2_field, help_window, start_button, randomize_button,
@@ -217,6 +215,7 @@ def restart_game(screen, gamer_field, gamer2_field, enemy, help_window, start_bu
              enemy_ship_panel, game_over_window, player_ship_array, enemy_ship_array,
              player_field, enemy_field, fire_array, missfire_array)
 
+
 def run_game(screen, player_map, enemy_map, enemy, help_window, start_button, randomize_button, player_ship_panel,
              enemy_ship_panel, game_over_window, player_ship_array, enemy_ship_array,
              player_field, enemy_field, fire_array, missfire_array):
@@ -236,7 +235,6 @@ def run_game(screen, player_map, enemy_map, enemy, help_window, start_button, ra
                 if event.button == 1:
                     # if gamer performed double mouse click, turn around the ship
                     if clock.tick() < config.DOUBLECLICKTIME:
-                        print("double click detected!")
                         double_clicked = True
                     else:
                         double_clicked = False
@@ -257,8 +255,8 @@ def run_game(screen, player_map, enemy_map, enemy, help_window, start_button, ra
                                 help_window.add_log('"Something wrong! Take a look at field"')
                     if randomize_button.collidepoint(event.pos) and randomize_button.clickable:
                         randomize_field(player_field, player_ship_array,
-                                                   config.player_field_coordinates[0],
-                                                   config.player_field_coordinates[1])
+                                        config.player_field_coordinates[0],
+                                        config.player_field_coordinates[1])
                     for ship in player_ship_array:
                         if ship.collidepoint(event.pos) and ship.dragable:
                             if double_clicked:
@@ -319,4 +317,3 @@ def run_game(screen, player_map, enemy_map, enemy, help_window, start_button, ra
     end_battle(screen, player_map, enemy_map, enemy, help_window, start_button, randomize_button, player_ship_panel,
                enemy_ship_panel, game_over_window, enemy_field, player_field, fire_array,
                missfire_array, player_ship_array, enemy_ship_array)
-
